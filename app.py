@@ -1,12 +1,12 @@
 # app.py
-from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
 
 from fastapi import FastAPI
 from pydantic import BaseModel
 import joblib
 from pymongo import MongoClient
 import datetime
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 @app.get("/")
