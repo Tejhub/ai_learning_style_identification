@@ -1,10 +1,17 @@
 # app.py
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
 from fastapi import FastAPI
 from pydantic import BaseModel
 import joblib
 from pymongo import MongoClient
 import datetime
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
+@app.get("/")
+async def read_index():
+    return FileResponse("static/index.html")
 
 # Load the trained model
 model = joblib.load('models/learning_style_model.pkl')
