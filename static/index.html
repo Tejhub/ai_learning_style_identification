@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Learning Style Predictor</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+  <div class="bg-white p-10 rounded-xl shadow-lg w-full max-w-md">
+    <h1 class="text-2xl font-bold text-center mb-8 text-indigo-600">Learning Style Predictor</h1>
+    
+    <form id="predictForm" class="space-y-5">
+      <input type="number" step="any" id="avg_reading_time" placeholder="Average Reading Time" required 
+        class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400">
+        
+      <input type="number" step="any" id="avg_video_time" placeholder="Average Video Time" required 
+        class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400">
+        
+      <input type="number" step="any" id="quiz_accuracy" placeholder="Quiz Accuracy" required 
+        class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400">
+        
+      <input type="number" id="clicks" placeholder="Clicks" required 
+        class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400">
+      
+      <button type="submit" 
+        class="w-full bg-indigo-500 text-white py-2 rounded-md hover:bg-indigo-600 transition">
+        Predict
+      </button>
+    </form>
+
+    <h2 id="result" class="text-center mt-8 text-xl font-semibold text-green-600"></h2>
+  </div>
+
+  <script>
+    document.getElementById('predictForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const response = await fetch('/predict', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          avg_reading_time: parseFloat(document.getElementById('avg_reading_time').value),
+          avg_video_time: parseFloat(document.getElementById('avg_video_time').value),
+          quiz_accuracy: parseFloat(document.getElementById('quiz_accuracy').value),
+          clicks: parseInt(document.getElementById('clicks').value)
+        })
+      });
+      const data = await response.json();
+      document.getElementById('result').innerText = "Predicted: " + data.predicted_style;
+    });
+  </script>
+</body>
+</html>
